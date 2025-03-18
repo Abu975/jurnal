@@ -24,6 +24,13 @@ const App = () => {
     tadarus: '',
     catatan: ''
   });
+  const [edited, setEdited] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+
+  const doEdit = (index) => {
+    setEdited(true);
+    setEditIndex(index);
+  }
 
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
@@ -75,7 +82,21 @@ const App = () => {
   const handleSubmit = () => {
     const today = new Date().toISOString().split('T')[0];
     const newEntry = { ...form, date: form.date || today };
-    setEntries([...entries, newEntry].sort((a, b) => new Date(a.date) - new Date(b.date)));
+    // setEntries([...entries, newEntry].sort((a, b) => new Date(a.date) - new Date(b.date)));
+
+    if (edited) { // Ditambah
+      // Update the existing entry // Diubah
+      const updatedEntries = entries.map((entry, index) => // Ditambah
+        index === editIndex ? newEntry : entry // Ditambah
+      ); // Ditambah
+      setEntries(updatedEntries); // Ditambah
+      setEdited(false); // Ditambah
+      setEditIndex(null); // Ditambah
+    } else { // Ditambah
+      // Add a new entry
+      setEntries([...entries, newEntry].sort((a, b) => new Date(a.date) - new Date(b.date)));
+    }
+
     setForm({
       date: '',
       puasa: false,
@@ -103,128 +124,181 @@ const App = () => {
   };
 
   const handleEdit = (index) => {
+    doEdit(index);
     const entry = entries[index];
     setForm(entry);
   };
 
+  const clearForm = () => {
+    setForm({
+      date: '',
+      puasa: false,
+      sholatFardu: {
+        subuh: false,
+        dzuhur: false,
+        ashar: false,
+        maghrib: false,
+        isha: false
+      },
+      sholatSunnah: {
+        dhuha: false,
+        tahajud: false,
+        witir: false,
+        rawatib: false
+      },
+      tadarus: '',
+      catatan: ''
+    });
+    setEdited(false);
+    setEditIndex(null);
+  }
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-center">Sholat Journal</h1>
-      <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 mb-6">
-        <label className="block text-gray-700 font-semibold mb-2">Tanggal</label>
-        <input
-          type="date"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          className="border rounded p-2 w-full mb-4"
-        />
+    <div className="main">
+      <div className="container mx-auto p-4"> 
+        <h1 className="text-3xl text-slate-900 font-bold mt-16 mb-6 text-center">Jurnal Ramadhan</h1>
+        {/* <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 mb-6"> */}
+        <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 mb-6 text-slate-900">
+          <label className="block text-slate-900 font-semibold mb-2 ">Tanggal</label>
+          <input
+            type="date"
+            name="date"
+            value={form.date}
+            onChange={handleChange}
+            className="border text-white rounded p-2 w-full mb-4"
+          />
 
-        <label className="block text-gray-700 font-semibold mb-2">Puasa</label>
-        <input
-          type="checkbox"
-          name="puasa"
-          checked={form.puasa}
-          onChange={handleChange}
-          className="mb-4"
-        />
+          <label className="block text-slate-900 font-semibold mb-2">Puasa</label>
+          <input
+            type="checkbox"
+            name="puasa"
+            checked={form.puasa}
+            onChange={handleChange}
+            className="mb-4"
+          />
 
-        <label className="block text-gray-700 font-semibold mb-2">Sholat Fardu</label>
-        <div className="flex flex-wrap mb-4 space-x-4">
-          {['subuh', 'dzuhur', 'ashar', 'maghrib', 'isha'].map((sholat, index) => (
-            <label key={index} className="flex items-center">
-              <input
-                type="checkbox"
-                name={`sholatFardu.${sholat}`}
-                checked={form.sholatFardu[sholat]}
-                onChange={handleChange}
-                className="mr-2"
-              />
-              {sholat.charAt(0).toUpperCase() + sholat.slice(1)}
-            </label>
-          ))}
-        </div>
+          <label className="block text-slate-900 font-semibold mb-2">Sholat Fardu</label>
+          <div className="flex flex-wrap mb-4 space-x-4">
+            {['subuh', 'dzuhur', 'ashar', 'maghrib', 'isha'].map((sholat, index) => (
+              <label key={index} className="flex items-center">
+                <input
+                  type="checkbox"
+                  name={`sholatFardu.${sholat}`}
+                  checked={form.sholatFardu[sholat]}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                {sholat.charAt(0).toUpperCase() + sholat.slice(1)}
+              </label>
+            ))}
+          </div>
 
-        <label className="block text-gray-700 font-semibold mb-2">Sholat Sunnah</label>
-        <div className="flex flex-wrap mb-4 space-x-4">
-          {['dhuha', 'tahajud', 'witir', 'rawatib'].map((sunnah, index) => (
-            <label key={index} className="flex items-center">
-              <input
-                type="checkbox"
-                name={`sholatSunnah.${sunnah}`}
-                checked={form.sholatSunnah[sunnah]}
-                onChange={handleChange}
-                className="mr-2"
-              />
-              {sunnah.charAt(0).toUpperCase() + sunnah.slice(1)}
-            </label>
-          ))}
-        </div>
+          <label className="block text-slate-900 font-semibold mb-2">Sholat Sunnah</label>
+          <div className="flex flex-wrap mb-4 space-x-4">
+            {['tahajud', 'dhuha', 'tarawih', 'witir', 'rawatib', 'qobliyah', 'badiyah'].map((sunnah, index) => (
+              <label key={index} className="flex items-center">
+                <input
+                  type="checkbox"
+                  name={`sholatSunnah.${sunnah}`}
+                  checked={form.sholatSunnah[sunnah]}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                {sunnah.charAt(0).toUpperCase() + sunnah.slice(1)}
+              </label>
+            ))}
+          </div>
 
-        <label className="block text-gray-700 font-semibold mb-2">Tadarus</label>
-        <input
-          type="text"
-          name="tadarus"
-          value={form.tadarus}
-          onChange={handleChange}
-          className="border rounded p-2 w-full mb-4"
-        />
+          <label className="block text-slate-900 font-semibold mb-2">Tadarus</label>
+          <input
+            type="text"
+            name="tadarus"
+            value={form.tadarus}
+            onChange={handleChange}
+            className="border rounded p-2 w-full mb-4"
+          />
 
-        <label className="block text-gray-700 font-semibold mb-2">Catatan</label>
-        <textarea
-          name="catatan"
-          value={form.catatan}
-          onChange={handleChange}
-          className="border rounded p-2 w-full mb-4"
-        />
+          <label className="block text-slate-900 font-semibold mb-2">Catatan</label>
+          <textarea
+            name="catatan"
+            value={form.catatan}
+            onChange={handleChange}
+            className="border rounded p-2 w-full mb-4"
+          />
+          {edited ? (
+            <>
+              <button
+                onClick={handleSubmit}
+                className="bg-blue-500 text-white p-2 w-full rounded"
+              >
+                Edit Jurnal
+              </button>
+              <button
+                onClick={() => {
+                  clearForm()
+                  setEdited(false)
+                }
+                }
+                className='bg-red-500 text-white p-2 w-full rounded mt-4'
+              >
+                Batal
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={handleSubmit}
+                className="bg-blue-500 text-white p-2 w-full rounded"
+              >
+                Tambahkan Jurnal
+             </button>
 
-        <button
-          onClick={handleSubmit}
-          className="bg-blue-500 text-white p-2 w-full rounded"
-        >
-          Add Entry
-        </button>
-      </div>
+            </>
+          )
+          }
+        </div >
 
-      <div className="flex flex-wrap -mx-2">
-        {entries.map((entry, index) => (
-          <div key={index} className="w-full md:w-1/2 lg:w-1/3 px-2 mb-4">
-            <div className="bg-white shadow-lg rounded-lg p-6">
-              <p><strong>Tanggal:</strong> {entry.date}</p>
-              <p><strong>Puasa:</strong> {entry.puasa ? 'Yes' : 'No'}</p>
-              <p><strong>Sholat Fardu:</strong></p>
-              <ul className="list-disc list-inside">
-                {Object.entries(entry.sholatFardu).map(([key, value]) => (
-                  value && <li key={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</li>
-                ))}
-              </ul>
-              <p><strong>Sholat Sunnah:</strong></p>
-              <ul className="list-disc list-inside">
-                {Object.entries(entry.sholatSunnah).map(([key, value]) => (
-                  value && <li key={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</li>
-                ))}
-              </ul>
-              <p><strong>Tadarus:</strong> {entry.tadarus}</p>
-              <p><strong>Catatan:</strong> {entry.catatan}</p>
-              <div className="flex space-x-2 mt-4">
-                <button
-                  onClick={() => handleEdit(index)}
-                  className="bg-yellow-500 text-white p-2 rounded"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(index)}
-                  className="bg-red-500 text-white p-2 rounded"
-                >
-                  Delete
-                </button>
+        <div className="flex flex-wrap -mx-2 mb-20">
+          {entries.map((entry, index) => (
+            <div key={index} className="w-full md:w-1/2 lg:w-1/3 px-2 mb-4">
+              <div className=" shadow-lg rounded-lg p-6 backdrop-blur-[10px] border-slate-100/20 border-1 text-white">
+                <p><strong>Tanggal:</strong> {entry.date}</p>
+                <p><strong>Puasa:</strong> {entry.puasa ? 'Yes' : 'No'}</p>
+                <p><strong>Sholat Fardu:</strong></p>
+                <ul className="list-disc list-inside">
+                  {Object.entries(entry.sholatFardu).map(([key, value]) => (
+                    value && <li key={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</li>
+                  ))}
+                </ul>
+                <p><strong>Sholat Sunnah:</strong></p>
+                <ul className="list-disc list-inside">
+                  {Object.entries(entry.sholatSunnah).map(([key, value]) => (
+                    value && <li key={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</li>
+                  ))}
+                </ul>
+                <p><strong>Tadarus:</strong> {entry.tadarus}</p>
+                <p><strong>Catatan:</strong> {entry.catatan}</p>
+                <div className="flex space-x-2 mt-4">
+                  <button
+                    onClick={() => handleEdit(index)}
+                    className="bg-white text-indigo-500 font-semibold p-2 rounded"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(index)}
+                    className="bg-indigo-500 text-white p-2 rounded"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </div >
     </div>
+
   );
 };
 
