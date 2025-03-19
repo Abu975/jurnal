@@ -1,8 +1,11 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Londrina+Solid:wght@100;300;400;900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 
 body {
     background-image: url('./assets/background.jpg');
     background-size: cover;
     background-position: center;
     min-height: 100vh;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }

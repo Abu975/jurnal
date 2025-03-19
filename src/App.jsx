@@ -155,17 +155,17 @@ const App = () => {
 
   return (
     <div className="main">
-      <div className="container mx-auto p-4"> 
-        <h1 className="text-3xl text-slate-900 font-bold mt-16 mb-6 text-center">Jurnal Ramadhan</h1>
+      <div className="container mx-auto p-4">
         {/* <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 mb-6"> */}
-        <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 mb-6 text-slate-900">
+        <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 mb- mt-10 text-slate-900">
+        <h1 className="text-3xl text-[#4C9A61] font-(family-name:Noto-serif) font-bold mt mb-12 text-center">Jurnal<br></br>Ramadhan</h1>
           <label className="block text-slate-900 font-semibold mb-2 ">Tanggal</label>
           <input
             type="date"
             name="date"
             value={form.date}
             onChange={handleChange}
-            className="border text-white rounded p-2 w-full mb-4"
+            className="border text-slate-900 rounded p-2 w-full mb-4"
           />
 
           <label className="block text-slate-900 font-semibold mb-2">Puasa</label>
@@ -229,9 +229,9 @@ const App = () => {
             <>
               <button
                 onClick={handleSubmit}
-                className="bg-blue-500 text-white p-2 w-full rounded"
+                className="cursor-pointer bg-[#4C9A61] text-white hover:bg-transparent hover:border-[#4C9A61] hover:border-2 hover:text-[#4C9A61] active:text-white active:bg-[#4C9A61] p-2 w-full rounded"
               >
-                Edit Jurnal
+                Simpan Perubahan
               </button>
               <button
                 onClick={() => {
@@ -239,7 +239,7 @@ const App = () => {
                   setEdited(false)
                 }
                 }
-                className='bg-red-500 text-white p-2 w-full rounded mt-4'
+                className='cursor-pointer bg-[#b89e2b] text-white hover:bg-transparent hover:border-[#4C9A61] hover:border-2 hover:text-[#4C9A61] active:text-white active:bg-[#4C9A61] p-2 w-full rounded mt-4'
               >
                 Batal
               </button>
@@ -248,22 +248,22 @@ const App = () => {
             <>
               <button
                 onClick={handleSubmit}
-                className="bg-blue-500 text-white p-2 w-full rounded"
+                className="cursor-pointer bg-[#4C9A61] text-white hover:bg-transparent hover:border-[#4C9A61] hover:border-2 hover:text-[#4C9A61] active:text-white active:bg-[#4C9A61] p-2 w-full rounded"
               >
                 Tambahkan Jurnal
-             </button>
+              </button>
 
             </>
           )
           }
         </div >
 
-        <div className="flex flex-wrap -mx-2 mb-20">
+        <div className="flex flex-wrap -mx-2 mb-20 mt-20">
           {entries.map((entry, index) => (
             <div key={index} className="w-full md:w-1/2 lg:w-1/3 px-2 mb-4">
-              <div className=" shadow-lg rounded-lg p-6 backdrop-blur-[10px] border-slate-100/20 border-1 text-white">
+              <div className=" shadow-lg rounded-lg p-6 bg-white text-slate-900">
                 <p><strong>Tanggal:</strong> {entry.date}</p>
-                <p><strong>Puasa:</strong> {entry.puasa ? 'Yes' : 'No'}</p>
+                <p><strong>Puasa:</strong> {entry.puasa ? 'Berpuasa' : 'Tidak'}</p>
                 <p><strong>Sholat Fardu:</strong></p>
                 <ul className="list-disc list-inside">
                   {Object.entries(entry.sholatFardu).map(([key, value]) => (
@@ -281,13 +281,13 @@ const App = () => {
                 <div className="flex space-x-2 mt-4">
                   <button
                     onClick={() => handleEdit(index)}
-                    className="bg-white text-indigo-500 font-semibold p-2 rounded"
+                    className="cursor-pointer hover:bg-[#4C9A61] hover:text-white bg-transparent border-2 border-[#4C9A61] text-[#4C9A61] font-semibold p-2 rounded"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(index)}
-                    className="bg-indigo-500 text-white p-2 rounded"
+                    className="cursor-pointer hover:bg-[#4C9A61] hover:text-white bg-transparent border-2 border-[#4C9A61] text-[#4C9A61] font-semibold p-2 rounded"
                   >
                     Delete
                   </button>
