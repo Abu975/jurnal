@@ -158,7 +158,7 @@ const App = () => {
       <div className="container mx-auto p-4">
         {/* <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 mb-6"> */}
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 mb- mt-10 text-slate-900">
-        <h1 className="text-3xl text-[#4C9A61] font-(family-name:Noto-serif) font-bold mt mb-12 text-center">Jurnal<br></br>Ramadhan</h1>
+        <h1 className="text-3xl text-[#4C9A61] font-(family-name:Noto-serif) font-bold mt mb-8 text-center">Jurnal<br></br>Ramadhan</h1>
           <label className="block text-slate-900 font-semibold mb-2 ">Tanggal</label>
           <input
             type="date"
@@ -261,7 +261,7 @@ const App = () => {
         <div className="flex flex-wrap -mx-2 mb-20 mt-20">
           {entries.map((entry, index) => (
             <div key={index} className="w-full md:w-1/2 lg:w-1/3 px-2 mb-4">
-              <div className=" shadow-lg rounded-lg p-6 bg-white text-slate-900">
+              <div className=" shadow-lg rounded-lg p-6 bg-white text-slate-900 hover:bg-slate-100 hover:border-2 hover:border-white transition-transform">
                 <p><strong>Tanggal:</strong> {entry.date}</p>
                 <p><strong>Puasa:</strong> {entry.puasa ? 'Berpuasa' : 'Tidak'}</p>
                 <p><strong>Sholat Fardu:</strong></p>
